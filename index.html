@@ -19,15 +19,21 @@
         <h2 class="header-title">Keep</h2>
       </header>
       <div id="form-container">
-        <form action="" autocomplete="off">
+        <form id="form" autocomplete="off">
           <input id="note-title" placeholder="Title" type="text" />
           <input type="text" id="note-text" placeholder="Write a note..." />
-          <div id="placeholder">
-            <img src="" alt="" id="placeholder-logo" />
-            <p id="placeholder-text">Notes you add appear here</p>
+          <div id="form-buttons">
+            <button type="submit" id="submit-button">Submit</button>
+            <button type="button" id="form-close-button">Close</button>
           </div>
         </form>
       </div>
+      <div id="notes"></div>
+      <div id="placeholder">
+        <img src="" alt="" id="placeholder-logo" />
+        <p id="placeholder-text">Notes you add appear here</p>
+      </div>
     </main>
+    <script src="app.js"></script>
   </body>
 </html>

@@ -30,15 +30,26 @@ class App {
         });
       }
     });
-    // this.
+    this.$formCloseButtons.addEventListener("click", (e) => {
+      // stop bubbling
+      e.stopPropagation();
+
+      this.closeForm();
+    });
   }
 
   handleFormClick(e) {
     const isFormClicked = this.$form.contains(e.target);
 
+    const title = this.$noteTitle.value;
+    const text = this.$noteText.value;
+    // checking if we have a title or a text
+    const hasNote = title || text;
     if (isFormClicked) {
       // open
       this.openForm();
+    } else if (hasNote) {
+      this.addNote({ title, text });
     } else {
       //close
       this.closeForm();
@@ -59,10 +70,10 @@ class App {
     this.$noteTitle.value = " ";
   }
 
-  addNote(note) {
+  addNote({ title, text }) {
     const newNote = {
-      title: note.title,
-      text: note.text,
+      title,
+      text,
       color: "white",
       id: this.notes.length > 0 ? this.notes[this.notes.length - 1].id + 1 : 1,
     };

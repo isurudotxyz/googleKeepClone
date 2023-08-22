@@ -25,6 +25,7 @@ class App {
       this.handleFormClick(e);
       this.selectNote(e);
       this.openModal(e);
+      this.deleteNote(e);
     });
     document.body.addEventListener("mouseover", (e) => {
       this.openToolTip(e);
@@ -102,6 +103,7 @@ class App {
   }
 
   openModal(e) {
+    if (e.target.matches(".toolbar-delete")) return;
     if (e.target.closest(".note")) {
       this.$modal.classList.toggle("open-modal");
       this.$modalTitle.value = this.title;
@@ -159,6 +161,14 @@ class App {
     this.title = $noteTitle.innerText;
     this.text = $noteText.innerText;
     this.id = $selectedNote.dataset.id;
+  }
+
+  deleteNote(e) {
+    e.stopPropagation();
+    if (!e.target.matches(".toolbar-delete")) return;
+    const id = e.target.dataset.id;
+    this.notes.filter((note) => note.id !== Number(id));
+    this.displayNotes();
   }
   displayNotes() {
     // check if notes exist

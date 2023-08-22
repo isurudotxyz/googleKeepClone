@@ -15,6 +15,7 @@ class App {
     this.$modalTitle = document.querySelector(".modal-title");
     this.$modalText = document.querySelector(".modal-text");
     this.$modalCloseButton = document.querySelector(".modal-close-button");
+    this.$colorToolTip = document.querySelector("#color-tooltip");
 
     this.addEventListeners();
   }
@@ -24,6 +25,24 @@ class App {
       this.handleFormClick(e);
       this.selectNote(e);
       this.openModal(e);
+    });
+    document.body.addEventListener("mouseover", (e) => {
+      this.openToolTip(e);
+    });
+    document.body.addEventListener("mouseout", (e) => {
+      this.closeToolTip(e);
+    });
+    this.$colorToolTip.addEventListener("mouseover", function () {
+      this.style.display = "flex";
+    });
+    this.$colorToolTip.addEventListener("mouseout", function () {
+      this.style.display = "none";
+    });
+    this.$colorToolTip.addEventListener("click", (e) => {
+      const color = e.target.dataset.color;
+      if (color) {
+        this.editNoteColor(color);
+      }
     });
     // adding note
     this.$form.addEventListener("submit", (e) => {
@@ -94,6 +113,19 @@ class App {
     this.$modal.classList.toggle("open-modal");
   }
 
+  openToolTip(e) {
+    if (!e.target.matches(".toolbar-color")) return;
+    this.id = e.target.dataset.id;
+    const noteCoords = e.target.getBoundingClientRect();
+    const horizontal = noteCoords.left + window.scrollX;
+    const vertical = noteCoords.top + window.scrollY;
+    this.$colorToolTip.style.transform = `translate( ${horizontal}px ,${vertical} px)`;
+    this.$colorToolTip.style.display = "flex";
+  }
+  closeToolTip(e) {
+    if (!e.target.matches(".toolbar-color")) return;
+    this.$colorToolTip.style.display = "none";
+  }
   addNote({ title, text }) {
     const newNote = {
       title,
@@ -110,6 +142,13 @@ class App {
     const text = this.$modalText.value;
     this.notes = this.notes.map((note) =>
       note.id === Number(this.id) ? { ...note, title, text } : note
+    );
+    this.displayNotes();
+  }
+
+  editNoteColor(color) {
+    this.notes = this.notes.map((note) =>
+      note.id === Number(this.id) ? { ...note, color } : note
     );
     this.displayNotes();
   }
@@ -135,7 +174,9 @@ class App {
       <div class="note-text">${note.text}</div>
       <div class="toolbar-container">
         <div class="toolbar">
-          <img class="toolbar-color" src="https://icon.now.sh/palette"/>
+          <img class="toolbar-color" data-id=${
+            note.id
+          } src="https://icon.now.sh/palette"/>
           <img class="toolbar-delete" src="https://icon.now.sh/delete"/>
         </div>
       </div>

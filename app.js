@@ -109,7 +109,7 @@ class App {
     const title = this.$modalTitle.value;
     const text = this.$modalText.value;
     this.notes = this.notes.map((note) =>
-      note.id === Number(this.id) ? { ...this.notes, title, text } : note
+      note.id === Number(this.id) ? { ...note, title, text } : note
     );
     this.displayNotes();
   }
@@ -131,7 +131,7 @@ class App {
       .map(
         (note) => `
     <div style="background: ${note.color};" class="note" data-id="${note.id}">
-      <div class="${note.title && "note-title"}>${note.title}</div>
+      <div class="${note.title && "note-title"}">${note.title}</div>
       <div class="note-text">${note.text}</div>
       <div class="toolbar-container">
         <div class="toolbar">
